@@ -1,0 +1,17 @@
+{
+    "name": "Abdo's app",
+    "author": {
+      "name": "Abdo Shaban",
+      "email": "ashaban@zendesk.com",
+      "url": "https://www.zendesk.com"
+    },
+    "defaultLocale": "en",
+    "private": false,
+    "location": {
+      "zendesk": {
+        "ticket_sidebar": "assets/index.html"
+      }
+    },
+    "version": "1.0",
+    "frameworkVersion": "2.0"
+  }

@@ -1,0 +1,17 @@
+{
+    "ticket_fields": {
+      "pinned_by": {
+        "type": "text",
+        "title": "Pinned By",
+        "active": true
+      }
+    },
+    "user_fields": {
+      "bookmarked_tickets": {
+        "type": "text",
+        "key": "bookmarked_tickets",
+        "title": "Bookmarked_tickets",
+        "active": true
+      }
+    }
+  }

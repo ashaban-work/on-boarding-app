@@ -1,0 +1,40 @@
+{
+  "name": "ashaban-app",
+  "version": "1.0.0",
+  "description": "Abdo's Onboarding App",
+  "main": "index.js",
+  "author": "ashaban@zendesk.com",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack --watch --mode=development",
+    "build": "webpack"
+  },
+  "dependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "@zendeskgarden/react-buttons": "^6.3.1",
+    "@zendeskgarden/react-theming": "^6.2.0",
+    "npm-check-updates": "^3.1.21",
+    "prop-types": "^15.7.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-redux": "^7.1.0",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^4.3.2"
+  },
+  "devDependencies": {
+    "babel-loader": "^8.0.6",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "copy-webpack-plugin": "^5.0.4",
+    "lodash": "^4.17.15",
+    "webpack": "^4.39.2",
+    "webpack-cdn-plugin": "^3.1.4",
+    "webpack-cli": "^3.3.7",
+    "webpack-dev-server": "^3.8.0"
+  }
+}
