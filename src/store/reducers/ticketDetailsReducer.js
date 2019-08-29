@@ -1,7 +1,6 @@
 import {
   SET_REQUESTER_NAME,
   SET_CUSTOM_FIELD_NAME,
-  GET_BOOKMARKED_USERS,
   SET_BOOKMARKED_USERS,
   SET_USER_BOOKMARK_STATUS
 } from '../actions/types';
@@ -30,12 +29,6 @@ export default function(state = initialState, action) {
         ...state,
         customFieldName: action.payload
       };
-    case GET_BOOKMARKED_USERS:
-      return {
-        ...state,
-        bookMarkedUsers: action.payload,
-        count: action.count
-      };
     case SET_BOOKMARKED_USERS:
       return {
         ...state,
@@ -45,7 +38,7 @@ export default function(state = initialState, action) {
     case SET_USER_BOOKMARK_STATUS:
       return {
         ...state,
-        isUserBookmarked: action.payload
+        isUserBookmarked: action.isUserBookmarked
       };
     default:
       return state;

@@ -1,14 +1,13 @@
 import {
   SET_REQUESTER_NAME,
   SET_CUSTOM_FIELD_NAME,
-  GET_BOOKMARKED_USERS,
   SET_BOOKMARKED_USERS,
   SET_USER_BOOKMARK_STATUS
 } from './types'
 import client from '../../modules/client'
 
 
-export const getTicketRequester = ( bookMarkedUsers ) => dispatch => {
+export const getTicketRequester = () => dispatch => {
   client.get(['ticket.subject', 'ticket.requester.name', 'currentUser']).then(function(data) {
     dispatch({
       type: SET_REQUESTER_NAME,
@@ -32,19 +31,16 @@ const addUserBookmark = (ticketDetails, dispatch) => {
   var { name, id, customFieldName, bookMarkedUsers, count } = ticketDetails
   var myObjAsString, usersObject
   if ( count == 0) {
-    var myObject = {
-      0: {
-        name,
-        id
+    usersObject = {
+      [id]: {
+        name
       }
     }
-    usersObject = myObject
     myObjAsString = JSON.stringify(myObject);
   }
   else {
-    bookMarkedUsers[count] = {
-      name,
-      id
+    bookMarkedUsers[id] = {
+      name
     }
     usersObject = bookMarkedUsers
     myObjAsString = JSON.stringify(bookMarkedUsers);
@@ -58,26 +54,17 @@ const addUserBookmark = (ticketDetails, dispatch) => {
   })
 }
 
-// 1:- REMOVE USER FROM THE OBJECT --------- DONE
-// 2:- DECREMENT COUNT --------- DONE
-// 3:- UPDATE THE CUSTOM FIELD
-// 4:- UPDATE isUserBookmarked
-
-
 const removeUserBookmark = (ticketDetails, dispatch) => {
-  var { name, id, customFieldName, bookMarkedUsers, count } = ticketDetails
-
-
-
-  const keys = Object.keys(bookMarkedUsers)
-    for ( var key in keys ) {
-      if ( id == bookMarkedUsers[key].id) {
+  var { id, customFieldName, bookMarkedUsers, count } = ticketDetails
+    for ( var [key, value] of Object.entries(bookMarkedUsers) ) {
+      if ( id == key ) {
         count--
         delete bookMarkedUsers[key]
+        var myObjAsString = JSON.stringify(bookMarkedUsers);
         if ( count == 0 )
           client.set('ticket.customField:'+ customFieldName, '')
         else {
-          client.set('ticket.customField:'+ customFieldName, bookMarkedUsers)
+          client.set('ticket.customField:'+ customFieldName, myObjAsString)
         }
         dispatch({
           type: SET_BOOKMARKED_USERS,
@@ -113,33 +100,27 @@ export const getCustomFieldName = () => dispatch => {
 
 const getBookmarkedUsers = (customFieldName, dispatch) => {
   client.get( 'ticket.customField:'+ customFieldName ).then(function(data) {
-    var myCustomFieldValue = JSON.parse(data['ticket.customField:custom_field_360021930571'])
+    var myCustomFieldValue = JSON.parse(data[('ticket.customField:'+ customFieldName)])
     const bookmarkedUsers = Object.keys(myCustomFieldValue)
     dispatch({
-      type: GET_BOOKMARKED_USERS,
+      type: SET_BOOKMARKED_USERS,
       payload: myCustomFieldValue,
       count: bookmarkedUsers.length
     })
   })
 }
 
-export const isCurrentUserBookmarked = ( id, bookMarkedUsers, condition ) => dispatch => {
-  if ( condition ) {
+export const isCurrentUserBookmarked = ( id, bookMarkedUsers, isUserBookmarked ) => dispatch => {
+  if ( isUserBookmarked ) {
     return 0
   }
   else {
-    const keys = Object.keys(bookMarkedUsers)
     for ( var [key, value] of Object.entries(bookMarkedUsers) ) {
-      console.log(key)
-      if ( id == bookMarkedUsers[key].id)
+      if ( id == key )
       dispatch({
         type: SET_USER_BOOKMARK_STATUS,
-        payload: true
+        isUserBookmarked: true
       })
     }
   }
 }
-
-// for (const [key, value] of Object.entries(obj)) {
-//   console.log(`${key} ${value}`); // "a 5", "b 7", "c 9"
-// }
