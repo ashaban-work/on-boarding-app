@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import client from '../modules/client'
+import {
+  fetchBookmarkedTickets
+} from '../store/actions/topbarActions'
 
 // to send user to the ticket clicked
 // client.invoke('routeTo', 'ticket', 'new')
@@ -9,29 +11,42 @@ import client from '../modules/client'
 class MyTopbar extends Component {
 
   componentDidMount() {
-    client.get("currentUser.id").then(res => {
-      const id = res["currentUser.id"];
-      client.request(`/api/v2/users/${id}.json`).then( data => {
-        console.log(data.user['user_fields'].bookmarked_tickets)
-      })
-    })
+    this.props.fetchBookmarkedTickets()
+  }
+
+  displayTickets() {
+    const myTickets = this.props.userDetails.bookMarkedTickets
+    let ticketList = []
+    if ( myTickets ) {
+      for ( var [key, value] of Object.entries(myTickets) ) {
+        ticketList.push(
+          <li key={key} >
+            <p>Ticket ID = {key}</p>
+            <p>Ticket Subject = {value.ticketSubject}</p>
+          </li>
+        )
+      }
+      return ticketList
+    }
   }
 
 	render() {
+    const ticketList = this.displayTickets()
 		return (
 			<div>
-				<h2>SHIT IT DOESNT WORK</h2>
+				<ul>{ticketList}</ul>
 			</div>
 		)
 	}
 }
 
 MyTopbar.propTypes = {
-  ticketDetails: PropTypes.object.isRequired
+  fetchBookmarkedTickets: PropTypes.func.isRequired,
+  userDetails: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-  ticketDetails: state.ticketDetails
+  userDetails: state.userDetails
 });
 
-export default connect(mapStateToProps, {})(MyTopbar);
+export default connect(mapStateToProps, {fetchBookmarkedTickets})(MyTopbar);

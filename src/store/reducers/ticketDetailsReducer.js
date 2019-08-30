@@ -3,7 +3,8 @@ import {
   SET_CUSTOM_FIELD_NAME,
   SET_BOOKMARKED_USERS,
   SET_USER_BOOKMARK_STATUS,
-  SET_TOPBAR_GUID
+  SET_TOPBAR_GUID,
+  SET_BOOKMARKED_TICKETS
 } from '../actions/types';
 
 const initialState = {
@@ -13,7 +14,8 @@ const initialState = {
   bookMarkedUsers: {},
   count: 0,
   isUserBookmarked: false,
-  topbarGuid: null
+  topbarGuid: null,
+  bookMarkedTickets: {}
 };
 
 // Set the state based on the action dispatched
@@ -46,6 +48,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         topbarGuid: action.topbarGuid
+      };
+    case SET_BOOKMARKED_TICKETS:
+      return {
+        ...state,
+        bookMarkedTickets: action.bookMarkedTickets
       };
     default:
       return state;
