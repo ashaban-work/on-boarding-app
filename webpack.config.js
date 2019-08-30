@@ -6,7 +6,8 @@ module.exports = {
   devtool: 'eval-source-map',
   // Entry point to my app
   entry: {
-    index: path.resolve(__dirname, "src", "index.js")
+    index: path.resolve(__dirname, "src", "index.js"),
+    topbar: path.resolve(__dirname, "src", "topbar.js")
   },
   // Where to output the build/compiled file
   output: {

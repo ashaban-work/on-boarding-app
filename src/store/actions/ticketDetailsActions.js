@@ -2,7 +2,8 @@ import {
   SET_REQUESTER_NAME,
   SET_CUSTOM_FIELD_NAME,
   SET_BOOKMARKED_USERS,
-  SET_USER_BOOKMARK_STATUS
+  SET_USER_BOOKMARK_STATUS,
+  SET_TOPBAR_GUID
 } from './types'
 import client from '../../modules/client'
 
@@ -28,7 +29,7 @@ export const setUsername = (ticketDetails) => dispatch => {
 }
 
 const addUserBookmark = (ticketDetails, dispatch) => {
-  var { name, id, customFieldName, bookMarkedUsers, count } = ticketDetails
+  var { name, id, customFieldName, bookMarkedUsers, count, topbarGuid } = ticketDetails
   var myObjAsString, usersObject
   if ( count == 0) {
     usersObject = {
@@ -36,7 +37,7 @@ const addUserBookmark = (ticketDetails, dispatch) => {
         name
       }
     }
-    myObjAsString = JSON.stringify(myObject);
+    myObjAsString = JSON.stringify(usersObject);
   }
   else {
     bookMarkedUsers[id] = {
@@ -52,6 +53,9 @@ const addUserBookmark = (ticketDetails, dispatch) => {
     payload: usersObject,
     count
   })
+  // ------------------------------
+  var topBarClient = client.instance(topbarGuid)
+  topBarClient.invoke('popover');
 }
 
 const removeUserBookmark = (ticketDetails, dispatch) => {
@@ -124,3 +128,57 @@ export const isCurrentUserBookmarked = ( id, bookMarkedUsers, isUserBookmarked )
     }
   }
 }
+
+export const getTopbarGuid = () => dispatch => {
+  // client.get("currentUser.id").then(res => {
+  //   const id = res["currentUser.id"];
+  //   client.request(`/api/v2/users/${id}.json`).then( data => {
+  //     console.log(data.user['user_fields'].bookmarked_tickets)
+  //   })
+  // })
+  client.get("currentUser.id").then(res => {
+    const id = res["currentUser.id"];
+    client.request({
+      url: `/api/v2/users/${id}.json`,
+      type: "put",
+      data: {
+        user: {
+          user_fields: {
+            bookmarked_tickets: "LOLOLLOLOLOLOL"
+          }
+        }
+      }
+      ,
+      httpCompleteResponse: true
+    }).then( data => {
+      console.log(data)
+    })
+  })
+
+  client.get("instances")
+  .then(function(instancesData) {
+    var instances = instancesData.instances
+    for (let instanceGuid in instances) {
+      if (instances[instanceGuid].location === "top_bar") {
+        dispatch({
+          type: SET_TOPBAR_GUID,
+          topbarGuid: instanceGuid
+        })
+      }
+    }
+  }).catch(error => console.log("error", error))
+}
+
+/*
+var topBarClientPromise = client
+.get("instances")
+.then(function(instancesData) {
+  var instances = instancesData.instances;
+  for (let instanceGuid in instances) {
+    if (instances[instanceGuid].location === "top_bar") {
+      return client.instance(instanceGuid);
+    }
+  }
+}).catch(error => console.log("error", error))
+;
+ */

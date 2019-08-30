@@ -2,7 +2,8 @@ import {
   SET_REQUESTER_NAME,
   SET_CUSTOM_FIELD_NAME,
   SET_BOOKMARKED_USERS,
-  SET_USER_BOOKMARK_STATUS
+  SET_USER_BOOKMARK_STATUS,
+  SET_TOPBAR_GUID
 } from '../actions/types';
 
 const initialState = {
@@ -11,7 +12,8 @@ const initialState = {
   customFieldName: null,
   bookMarkedUsers: {},
   count: 0,
-  isUserBookmarked: false
+  isUserBookmarked: false,
+  topbarGuid: null
 };
 
 // Set the state based on the action dispatched
@@ -39,6 +41,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         isUserBookmarked: action.isUserBookmarked
+      };
+    case SET_TOPBAR_GUID:
+      return {
+        ...state,
+        topbarGuid: action.topbarGuid
       };
     default:
       return state;

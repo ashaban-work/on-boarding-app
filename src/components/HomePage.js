@@ -6,7 +6,8 @@ import {
   getTicketRequester,
   setUsername,
   getCustomFieldName,
-  isCurrentUserBookmarked
+  isCurrentUserBookmarked,
+  getTopbarGuid
 } from '../store/actions/ticketDetailsActions'
 
 class HomePage extends Component {
@@ -14,6 +15,7 @@ class HomePage extends Component {
 	componentDidMount() {
     this.props.getTicketRequester()
     this.props.getCustomFieldName()
+    this.props.getTopbarGuid()
   }
 
   bookmarkHandler() {
@@ -53,6 +55,7 @@ HomePage.propTypes = {
   getCustomFieldName: PropTypes.func.isRequired,
   isCurrentUserBookmarked: PropTypes.func.isRequired,
   setUsername: PropTypes.func.isRequired,
+  getTopbarGuid: PropTypes.func.isRequired,
   ticketDetails: PropTypes.object.isRequired
 }
 
@@ -64,5 +67,6 @@ export default connect(mapStateToProps, {
   getTicketRequester,
   setUsername,
   getCustomFieldName,
-  isCurrentUserBookmarked
+  isCurrentUserBookmarked,
+  getTopbarGuid
 })(HomePage);

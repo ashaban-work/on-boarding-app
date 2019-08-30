@@ -9,7 +9,8 @@
     "private": false,
     "location": {
       "zendesk": {
-        "ticket_sidebar": "assets/index.html"
+        "ticket_sidebar": "assets/index.html",
+        "top_bar": "assets/topbar.html"
       }
     },
     "version": "1.0",
