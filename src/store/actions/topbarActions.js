@@ -16,3 +16,7 @@ export const fetchBookmarkedTickets = () => dispatch => {
     })
   })
 }
+
+export const openTicket = (ticketId) => dispatch => {
+  client.invoke('routeTo', 'ticket', ticketId )
+}

@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import ticketDetailsReducer from './ticketDetailsReducer';
+import sidebarReducer from './sidebarReducer';
 import topbarReducer from './topbarReducer';
 
 export default combineReducers({
-  ticketDetails: ticketDetailsReducer,
+  ticketDetails: sidebarReducer,
   userDetails: topbarReducer
 });

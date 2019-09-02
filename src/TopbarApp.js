@@ -9,7 +9,7 @@ class TopbarApp extends Component {
   render () {
     return (
       <Provider store={store}>
-          <div className="App">
+          <div>
             <MyTopbar />
           </div>
       </Provider>

@@ -3,14 +3,13 @@ import {
   SET_CUSTOM_FIELD_NAME,
   SET_BOOKMARKED_USERS,
   SET_USER_BOOKMARK_STATUS,
-  SET_TOPBAR_GUID,
   SET_BOOKMARKED_TICKETS
 } from './types'
 import client from '../../modules/client'
 
 
 export const getTicketRequester = () => dispatch => {
-  client.get(['ticket.subject', 'ticket.requester.name', 'currentUser']).then(function(data) {
+  client.get(['ticket.requester.name', 'currentUser']).then(function(data) {
     dispatch({
       type: SET_REQUESTER_NAME,
       name: data['currentUser'].name,
@@ -46,7 +45,6 @@ const addTicketToUser = (ticketDetails) => {
 const removeTicketFromUser = (ticketDetails) => {
   const { id, bookMarkedTickets } = ticketDetails
   client.get(['ticket.id', 'ticket.subject']).then( (data) => {
-    var ticketSubject = data['ticket.subject']
     var ticketId = data['ticket.id']
     delete bookMarkedTickets[ticketId]
     var myObjAsString = JSON.stringify(bookMarkedTickets);
@@ -189,32 +187,3 @@ export const setBookmarkedTickets = () => dispatch => {
     })
   })
 }
-
-export const getTopbarGuid = () => dispatch => {
-  client.get("instances")
-  .then(function(instancesData) {
-    var instances = instancesData.instances
-    for (let instanceGuid in instances) {
-      if (instances[instanceGuid].location === "top_bar") {
-        dispatch({
-          type: SET_TOPBAR_GUID,
-          topbarGuid: instanceGuid
-        })
-      }
-    }
-  }).catch(error => console.log("error", error))
-}
-
-/*
-var topBarClientPromise = client
-.get("instances")
-.then(function(instancesData) {
-  var instances = instancesData.instances;
-  for (let instanceGuid in instances) {
-    if (instances[instanceGuid].location === "top_bar") {
-      return client.instance(instanceGuid);
-    }
-  }
-}).catch(error => console.log("error", error))
-;
- */

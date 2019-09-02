@@ -1,17 +1,20 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import { Button } from '@zendeskgarden/react-buttons';
 import {
-  fetchBookmarkedTickets
+  fetchBookmarkedTickets,
+  openTicket
 } from '../store/actions/topbarActions'
-
-// to send user to the ticket clicked
-// client.invoke('routeTo', 'ticket', 'new')
 
 class MyTopbar extends Component {
 
   componentDidMount() {
     this.props.fetchBookmarkedTickets()
+  }
+
+  ticketEventHandler(ticketId) {
+    this.props.openTicket(ticketId)
   }
 
   displayTickets() {
@@ -23,6 +26,9 @@ class MyTopbar extends Component {
           <li key={key} >
             <p>Ticket ID = {key}</p>
             <p>Ticket Subject = {value.ticketSubject}</p>
+            <Button data-value={key} onClick={(e) => {this.ticketEventHandler(e.target.dataset.value)}} >
+              Open Ticket
+            </Button>
           </li>
         )
       }
@@ -42,6 +48,7 @@ class MyTopbar extends Component {
 
 MyTopbar.propTypes = {
   fetchBookmarkedTickets: PropTypes.func.isRequired,
+  openTicket: PropTypes.func.isRequired,
   userDetails: PropTypes.object.isRequired
 }
 
@@ -49,4 +56,7 @@ const mapStateToProps = state => ({
   userDetails: state.userDetails
 });
 
-export default connect(mapStateToProps, {fetchBookmarkedTickets})(MyTopbar);
+export default connect(mapStateToProps, {
+  fetchBookmarkedTickets,
+  openTicket
+})(MyTopbar);
